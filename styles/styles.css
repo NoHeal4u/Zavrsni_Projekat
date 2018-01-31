@@ -29,7 +29,26 @@ h6,
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
+    color: #b34848 !important;
+
+
+}
+
+ a {
+
     color: #b34848;
+
+}
+
+
+
+
+    h2:hover, h3:hover {
+    text-decoration: underline !important;
+}
+
+a:hover {
+    color:#b34848;
 }
 
 
@@ -64,6 +83,7 @@ h6,
     color: #fff;
     background-color: transparent;
 }
+
 
 /* Active state gets a caret at the bottom */
 .nav-link.active {
