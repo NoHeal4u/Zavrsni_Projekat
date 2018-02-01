@@ -1,30 +1,10 @@
+<?php include('header.php'); ?>
+
 <?php
-//
-//require 'core/bootstrap.php';
-//
-//if (Request::method() === 'POST') {
-//    App::get('post')->create();
-    // ako su mysql username/password i ime baze na vasim racunarima drugaciji
-    // obavezno ih ovde zamenite
-    $servername = "127.0.0.1:3306";
-    $username = "root";
-    $password = "vivify";
-    $dbname = "blog2";
-
-    try {
-
-        $connection = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-        // set the PDO error mode to exception
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    catch(PDOException $e)
-    {
-        echo $e->getMessage();
-    }
-
-
+                $id = $_GET['Id'];
     // pripremamo upit
-                $sql = "SELECT Id, Title, Body, Author, Created_at FROM posts ORDER BY created_at DESC LIMIT 3";
+                $sql = "SELECT comments.Id as ID_Komentara, comments.Author , comments.Text, comments.Post_Id, posts.Id, posts.Title, posts.Body, posts.Author as Pisac, posts.Created_at FROM posts left join comments on posts.Id = comments.Post_Id where posts.Id = $id;";
+                
                 $statement = $connection->prepare($sql);
                 // izvrsavamo upit
                 $statement->execute();
@@ -37,10 +17,12 @@
                     // echo '<pre>';
                     // var_dump($posts);
                     // echo '</pre>';
+                // var_dump($posts);
 ?>
 <!doctype html>
 <html lang="en">
 <head>
+   
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -62,7 +44,7 @@
 
 
 
- <?php include('header.php'); ?>
+ 
 
 <main role="main" class="container">
 
@@ -71,11 +53,13 @@
         <div class="col-sm-8 blog-main">
 
           <div class="blog-post">
-                <h2 class="blog-post-title"> <?php echo $posts[2]['Title'];?></h2>
-                <p class="blog-post-meta"><?php echo $posts[2]['Created_at'];?> by <a href="#"><?php echo $posts[2]['Author'];?></a></p>
+                <h2 class="blog-post-title"> <?php echo $posts[0]['Title'];?></h2>
+                <p class="blog-post-meta"><?php echo $posts[0]['Created_at'];?> by <a href="#"><?php echo $posts[0]['Pisac'];?></a></p>
 
                    
-                <p><?php echo $posts[2]['Body'];?></p>
+                <p><?php echo $posts[0]['Body'];?></p>
+                <h3>Komentari</h3>
+                <ul><?php include('comments.php'); ?></ul>
             </div>
 
             <nav class="blog-pagination">
@@ -94,9 +78,14 @@
 
 
 
+
+
 <?php include('footer.php'); ?>
 </body>
 </html>
+
+
+
 
 
 
