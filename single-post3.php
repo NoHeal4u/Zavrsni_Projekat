@@ -1,3 +1,43 @@
+<?php
+//
+//require 'core/bootstrap.php';
+//
+//if (Request::method() === 'POST') {
+//    App::get('post')->create();
+    // ako su mysql username/password i ime baze na vasim racunarima drugaciji
+    // obavezno ih ovde zamenite
+    $servername = "127.0.0.1:3306";
+    $username = "root";
+    $password = "vivify";
+    $dbname = "blog2";
+
+    try {
+
+        $connection = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    catch(PDOException $e)
+    {
+        echo $e->getMessage();
+    }
+
+
+    // pripremamo upit
+                $sql = "SELECT Id, Title, Body, Author, Created_at FROM posts ORDER BY created_at DESC LIMIT 3";
+                $statement = $connection->prepare($sql);
+                // izvrsavamo upit
+                $statement->execute();
+                // zelimo da se rezultat vrati kao asocijativni niz.
+                // ukoliko izostavimo ovu liniju, vratice nam se obican, numerisan niz
+                $statement->setFetchMode(PDO::FETCH_ASSOC);
+                // punimo promenjivu sa rezultatom upita
+                $posts = $statement->fetchAll();
+                // koristite var_dump kada god treba da proverite sadrzaj neke promenjive
+                    // echo '<pre>';
+                    // var_dump($posts);
+                    // echo '</pre>';
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,19 +71,12 @@
         <div class="col-sm-8 blog-main">
 
           <div class="blog-post">
-                <h2 class="blog-post-title">New feature</h2>
-                <p class="blog-post-meta">December 14, 2013 by <a href="#">Chris</a></p>
+                <h2 class="blog-post-title"> <?php echo $posts[0]['Title'];?></h2>
+                <p class="blog-post-meta"><?php echo $posts[0]['Created_at'];?> by <a href="#"><?php echo $posts[0]['Author'];?></a></p>
 
-                <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <ul>
-                    <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
-                    <li>Donec id elit non mi porta gravida at eget metus.</li>
-                    <li>Nulla vitae elit libero, a pharetra augue.</li>
-                </ul>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
-            </div><!-- /.blog-post -->
-
+                   
+                <p><?php echo $posts[0]['Body'];?></p>
+            </div>
 
             <nav class="blog-pagination">
                 <a class="btn btn-outline-primary" href="#">Older</a>

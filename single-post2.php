@@ -1,4 +1,44 @@
- <!doctype html>
+<?php
+//
+//require 'core/bootstrap.php';
+//
+//if (Request::method() === 'POST') {
+//    App::get('post')->create();
+    // ako su mysql username/password i ime baze na vasim racunarima drugaciji
+    // obavezno ih ovde zamenite
+    $servername = "127.0.0.1:3306";
+    $username = "root";
+    $password = "vivify";
+    $dbname = "blog2";
+
+    try {
+
+        $connection = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // set the PDO error mode to exception
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+    catch(PDOException $e)
+    {
+        echo $e->getMessage();
+    }
+
+
+    // pripremamo upit
+                $sql = "SELECT Id, Title, Body, Author, Created_at FROM posts ORDER BY created_at DESC LIMIT 3";
+                $statement = $connection->prepare($sql);
+                // izvrsavamo upit
+                $statement->execute();
+                // zelimo da se rezultat vrati kao asocijativni niz.
+                // ukoliko izostavimo ovu liniju, vratice nam se obican, numerisan niz
+                $statement->setFetchMode(PDO::FETCH_ASSOC);
+                // punimo promenjivu sa rezultatom upita
+                $posts = $statement->fetchAll();
+                // koristite var_dump kada god treba da proverite sadrzaj neke promenjive
+                    // echo '<pre>';
+                    // var_dump($posts);
+                    // echo '</pre>';
+?>
+<!doctype html>
 <html lang="en">
 <head>
 
@@ -29,18 +69,14 @@
     <div class="row">
 
         <div class="col-sm-8 blog-main">
-           <div class="blog-post">
-                <h2 class="blog-post-title">Another blog post</h2>
-                <p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p>
 
-                <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
-                <blockquote>
-                    <p>Curabitur blandit tempus porttitor. <strong>Nullam quis risus eget urna mollis</strong> ornare vel eu leo. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </blockquote>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            </div><!-- /.blog-post -->
+          <div class="blog-post">
+                <h2 class="blog-post-title"> <?php echo $posts[1]['Title'];?></h2>
+                <p class="blog-post-meta"><?php echo $posts[1]['Created_at'];?> by <a href="#"><?php echo $posts[1]['Author'];?></a></p>
 
+                   
+                <p><?php echo $posts[1]['Body'];?></p>
+            </div>
 
             <nav class="blog-pagination">
                 <a class="btn btn-outline-primary" href="#">Older</a>
