@@ -58,8 +58,21 @@
 
                    
                 <p><?php echo $posts[0]['Body'];?></p>
+                
 
-                <h3>Komentari</h3>
+                <h4>Komentari:</h4>
+                <p id = 'gadjaj'>Dodaj komentar forma:</p>
+                 <form onsubmit="return mySubmitFunction()" id = 'cela_forma' class = 'neka' action="create-comment.php?Id=<?php echo($id) ?>" method="POST">
+                    Comment Id(ako u sql nije autoincrement):<br>
+                    <input class = 'proveri_input' type="text" name="commentsID" value="1,2,3 etc.."><br>
+                    Text commenta:<br>
+                    <input  class = 'proveri_input' type="text" name="text" value="max 255 char"><br>
+                    Ime autora:<br>
+                    <input class = 'proveri_input' type="text" name="autor" value="max 32 char"><br><br>
+                   <!--  <input type="hidden" name="Id" value="<?php echo($id) ?>"> -->
+                    <input id = 'dugme' type="submit" value="Submit">
+
+                </form>   
                 <button id= 'mojeDugme' type="button" class="btn btn-default">Hide comments</button>
                 <ul id = 'komentari' class = 'Komentari_Klasa'><?php include('comments.php'); ?></ul>
             </div>
@@ -84,6 +97,61 @@
 
 <?php include('footer.php'); ?>
 <script src="javascript.js"></script>
+<script type="text/javascript">
+
+    // function mySubmitFunction(){
+
+
+        var clasa_proveri = document.getElementsByClassName("proveri_input");
+        var element = document.getElementById("gadjaj"); 
+        var dugme = document.getElementById("dugme");
+        var forma = document.getElementById("cela_forma");
+        
+    //     dugme.addEventListener("click", function(){
+
+    //     // for (var i = 0; i < clasa_proveri.length; i++) {
+    //     //     if (clasa_proveri[i].value =='') {
+            
+            
+    
+
+
+    //     //         element.innerHTML = "SVA POLJA MORAJU BITI POPUNJENA"; 
+    //     //         element.style.color = "red";
+    //     //         forma.className += " alert alert-danger";
+    //     //         dugme.type = none;
+            
+    //     //     }
+
+
+    //     // }
+    //     });
+
+    // }
+
+    function mySubmitFunction() {
+
+    var x = document.getElementById('cela_forma');
+    // console.log(x);
+    // return false;
+
+    for (var i = 0; i < x.length; i++) {
+        
+    
+        if (x[i].value == "") {
+            alert("Sva polja moraju biti popunjena");
+            forma.className += " alert alert-danger";
+            return false;
+        }
+    }
+}
+
+
+
+        </script>
+        
+
+        
 </body>
 </html>
 
