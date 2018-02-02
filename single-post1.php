@@ -58,8 +58,10 @@
 
                    
                 <p><?php echo $posts[0]['Body'];?></p>
+
                 <h3>Komentari</h3>
-                <ul><?php include('comments.php'); ?></ul>
+                <button id= 'mojeDugme' type="button" class="btn btn-default">Hide comments</button>
+                <ul id = 'komentari' class = 'Komentari_Klasa'><?php include('comments.php'); ?></ul>
             </div>
 
             <nav class="blog-pagination">
@@ -81,6 +83,7 @@
 
 
 <?php include('footer.php'); ?>
+<script src="javascript.js"></script>
 </body>
 </html>
 
